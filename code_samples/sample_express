@@ -1,0 +1,32 @@
+// This program is my http program, but instead written with express instead of HTTP.
+// One can see how express is a much cleaner way of accomplishing the same thing, and offers
+// additional opportunites to segregate our code into other files.
+
+//required for express
+const express = require('express');
+
+// Creates an express server
+const server = express();
+// We  expect an incomming form, thus we can parse the response with the code below
+// Speciffically used in post requests.
+server.use(express.urlencoded({extended:true}));
+
+// Handles our post request. It has two arguments; the url and a function that runs when the endpoint is called.
+// One would normally further seggregate this by having the function in a seperate file, but for this sample I
+// have it placed here. Also note how easy it is to get the request data (no playing with a loop required).
+server.post('/',(req,res) => {
+    let body ='';
+    const name=req.body.name;
+    res.setHeader('Content-Type','text/html'); 
+    res.end('<h1>'+name+'</h1>');
+})
+
+// Handles our get request. 
+server.get('/',(req,res) => {
+    res.setHeader('Content-Type','text/html');
+    res.end('<form method="POST"><input type="text" name="name"></input><button type ="submit"> Submit </button></form>');
+})
+
+
+// Listens to incoming requests on 5000
+server.listen(5000);
